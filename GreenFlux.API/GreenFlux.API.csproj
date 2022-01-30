@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GreenFlux.Data\GreenFlux.Data.csproj" />
+    <ProjectReference Include="..\GreenFlux.RepositoryAbstraction\GreenFlux.RepositoryAbstraction.csproj" />
+    <ProjectReference Include="..\GreenFlux.Repository\GreenFlux.Repository.csproj" />
+    <ProjectReference Include="..\GreenFlux.ServiceAbstraction\GreenFlux.ServiceAbstraction.csproj" />
+    <ProjectReference Include="..\GreenFlux.Service\GreenFlux.Service.csproj" />
+  </ItemGroup>
+
+</Project>
