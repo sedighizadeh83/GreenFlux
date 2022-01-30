@@ -41,7 +41,7 @@ We will evaluate if your code
 ## Solution
 ### Architecture
 The following diagram shows the high level architecture of the solution.
- 
+![image](https://user-images.githubusercontent.com/2537105/151719651-7ac55c6f-15aa-4726-939e-a6c030332398.png)
 
 
 ### Project Anatomy
