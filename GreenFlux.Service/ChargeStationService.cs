@@ -21,12 +21,12 @@ namespace GreenFlux.Service
             _groupRepository = groupRepository;
         }
 
-        public void CreateChargeStation(ChargeStationCreateDto chargeStation)
+        public async Task CreateChargeStation(ChargeStationCreateDto chargeStation)
         {
             var connectorsModel = _mapper.Map <IEnumerable<Connector>>(chargeStation.connectors);
             var chargeStationModel = _mapper.Map<ChargeStation>(chargeStation);
-            var groupEntity = _groupRepository.FindByCondition(g => g.Id == chargeStationModel.GroupId).ToList();
-            if (groupEntity.Count > 0)
+            var groupEntity = await _groupRepository.FindByCondition(g => g.Id == chargeStationModel.GroupId);
+            if (groupEntity.Count() > 0)
             {
                 foreach (var connector in connectorsModel)
                 {
@@ -35,7 +35,7 @@ namespace GreenFlux.Service
                 var validationResult = ChargeStationValidator.Validate(chargeStationModel, groupEntity.FirstOrDefault());
                 if (validationResult.IsValid)
                 {
-                    _repository.Create(chargeStationModel);
+                    await _repository.Create(chargeStationModel);
                 }
                 else
                 {
@@ -48,12 +48,12 @@ namespace GreenFlux.Service
             }
         }
 
-        public void DeleteChargeStation(int chargeStationId)
+        public async Task DeleteChargeStation(int chargeStationId)
         {
-            var chargeStationModelList = _repository.FindByCondition(cs => cs.Id == chargeStationId).ToList();
-            if (chargeStationModelList.Count > 0)
+            var chargeStationModelList = await _repository.FindByCondition(cs => cs.Id == chargeStationId);
+            if (chargeStationModelList.Count() > 0)
             {
-                _repository.Delete(chargeStationModelList.FirstOrDefault());
+                await _repository.Delete(chargeStationModelList.FirstOrDefault());
             }
             else
             {
@@ -61,25 +61,25 @@ namespace GreenFlux.Service
             }
         }
 
-        public IEnumerable<ChargeStationReadWithDetailDto> GetAllChargeStations()
+        public async Task<IEnumerable<ChargeStationReadWithDetailDto>> GetAllChargeStations()
         {
-            var chargeStations = _repository.FindAll();
+            var chargeStations = await _repository.FindAll();
             return _mapper.Map<IEnumerable<ChargeStationReadWithDetailDto>>(chargeStations);
         }
 
-        public ChargeStationReadWithDetailDto GetChargeStationById(int chargeStationId)
+        public async Task<ChargeStationReadWithDetailDto> GetChargeStationById(int chargeStationId)
         {
-            var chargeStation = _repository.FindByCondition(cs => cs.Id == chargeStationId).FirstOrDefault();
-            return _mapper.Map<ChargeStationReadWithDetailDto>(chargeStation);
+            var chargeStation = await _repository.FindByCondition(cs => cs.Id == chargeStationId);
+            return _mapper.Map<ChargeStationReadWithDetailDto>(chargeStation.FirstOrDefault());
         }
 
-        public void UpdateChargeStation(ChargeStationUpdateDto chargeStation)
+        public async Task UpdateChargeStation(ChargeStationUpdateDto chargeStation)
         {
             var chargeStationModel = _mapper.Map<ChargeStation>(chargeStation);
-            var chargeStationEntity = _repository.FindByCondition(cs => cs.Id == chargeStationModel.Id).ToList();
-            if (chargeStationEntity.Count > 0)
+            var chargeStationEntity = await _repository.FindByCondition(cs => cs.Id == chargeStationModel.Id);
+            if (chargeStationEntity.Count() > 0)
             {
-                _repository.Update(chargeStationModel);
+                await _repository.Update(chargeStationModel);
             }
             else
             {

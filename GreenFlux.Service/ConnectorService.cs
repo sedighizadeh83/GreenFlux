@@ -21,16 +21,16 @@ namespace GreenFlux.Service
             _chargeStationRepository = chargeStationRepository;
         }
 
-        public void CreateConnector(ConnectorCreateDto connector)
+        public async Task CreateConnector(ConnectorCreateDto connector)
         {
             var connectorModel = _mapper.Map<Connector>(connector);
-            var chargeStationEntity = _chargeStationRepository.FindByCondition(cs => cs.Id == connector.ChargeStationId).ToList();
-            if (chargeStationEntity.Count > 0)
+            var chargeStationEntity = await _chargeStationRepository.FindByCondition(cs => cs.Id == connector.ChargeStationId);
+            if (chargeStationEntity.Count() > 0)
             {
                 var validationResult = ConnectorValidator.ValidateForCreate(connectorModel, chargeStationEntity.FirstOrDefault(), chargeStationEntity.FirstOrDefault().Group);
                 if (validationResult.IsValid)
                 {
-                    _repository.Create(connectorModel);
+                    await _repository.Create(connectorModel);
                 }
                 else
                 {
@@ -43,16 +43,16 @@ namespace GreenFlux.Service
             }
         }
 
-        public void DeleteConnector(int connectorId, int chargeStationId)
+        public async Task DeleteConnector(int connectorId, int chargeStationId)
         {
-            var connectors = _repository.FindByCondition(g => g.Id == connectorId && g.ChargeStationId == chargeStationId).ToList();
-            if (connectors.Count > 0)
+            var connectors = await _repository.FindByCondition(g => g.Id == connectorId && g.ChargeStationId == chargeStationId);
+            if (connectors.Count() > 0)
             {
-                var chargeStationEntity = _chargeStationRepository.FindByCondition(cs => cs.Id == chargeStationId).ToList();
+                var chargeStationEntity = await _chargeStationRepository.FindByCondition(cs => cs.Id == chargeStationId);
                 var validationResult = ConnectorValidator.ValidateForDelete(chargeStationEntity.FirstOrDefault());
                 if (validationResult.IsValid)
                 {
-                    _repository.Delete(connectors.FirstOrDefault());
+                    await _repository.Delete(connectors.FirstOrDefault());
                 }
                 else
                 {
@@ -65,29 +65,29 @@ namespace GreenFlux.Service
             }
         }
 
-        public IEnumerable<ConnectorReadWithDetailDto> GetAllConnectors()
+        public async Task<IEnumerable<ConnectorReadWithDetailDto>> GetAllConnectors()
         {
-            var connectors = _repository.FindAll();
+            var connectors = await _repository.FindAll();
             return _mapper.Map<IEnumerable<ConnectorReadWithDetailDto>>(connectors);
         }
 
-        public ConnectorReadWithDetailDto GetConnectorById(int connectorId, int chargeStationId)
+        public async Task<ConnectorReadWithDetailDto> GetConnectorById(int connectorId, int chargeStationId)
         {
-            var connector = _repository.FindByCondition(g => g.Id == connectorId && g.ChargeStationId == chargeStationId).FirstOrDefault();
-            return _mapper.Map<ConnectorReadWithDetailDto>(connector);
+            var connector = await _repository.FindByCondition(g => g.Id == connectorId && g.ChargeStationId == chargeStationId);
+            return _mapper.Map<ConnectorReadWithDetailDto>(connector.FirstOrDefault());
         }
 
-        public void UpdateConnector(ConnectorUpdateDto connector)
+        public async Task UpdateConnector(ConnectorUpdateDto connector)
         {
-            var connectors = _repository.FindByCondition(g => g.Id == connector.Id && g.ChargeStationId == connector.ChargeStationId).ToList();
-            if (connectors.Count > 0)
+            var connectors = await _repository.FindByCondition(g => g.Id == connector.Id && g.ChargeStationId == connector.ChargeStationId);
+            if (connectors.Count() > 0)
             {
-                var chargeStationEntity = _chargeStationRepository.FindByCondition(cs => cs.Id == connector.ChargeStationId).ToList();
+                var chargeStationEntity = await _chargeStationRepository.FindByCondition(cs => cs.Id == connector.ChargeStationId);
                 var validationResult = ConnectorValidator.ValidateForUpdate(connectors.FirstOrDefault(), chargeStationEntity.FirstOrDefault().Group);
                 if (validationResult.IsValid)
                 {
                     var connectorModel = _mapper.Map<Connector>(connector);
-                    _repository.Update(connectorModel);
+                    await _repository.Update(connectorModel);
                 }
                 else
                 {

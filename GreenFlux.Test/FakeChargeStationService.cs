@@ -4,6 +4,7 @@ using GreenFlux.RepositoryAbstraction;
 using System.Collections.Generic;
 using GreenFlux.Service;
 using AutoMapper;
+using System.Threading.Tasks;
 
 namespace GreenFlux.Test
 {
@@ -21,29 +22,29 @@ namespace GreenFlux.Test
             _groupRepository = new FakeGroupRepository();
             _service = new ChargeStationService(_repository, _mapper, _groupRepository);
         }
-        public void CreateChargeStation(ChargeStationCreateDto chargeStation)
+        public async Task CreateChargeStation(ChargeStationCreateDto chargeStation)
         {
-            _service.CreateChargeStation(chargeStation);
+            await _service.CreateChargeStation(chargeStation);
         }
 
-        public void DeleteChargeStation(int chargeStationId)
+        public async Task DeleteChargeStation(int chargeStationId)
         {
-            _service.DeleteChargeStation(chargeStationId);
+            await _service.DeleteChargeStation(chargeStationId);
         }
 
-        public IEnumerable<ChargeStationReadWithDetailDto> GetAllChargeStations()
+        public async Task<IEnumerable<ChargeStationReadWithDetailDto>> GetAllChargeStations()
         {
-            return _service.GetAllChargeStations();
+            return await _service.GetAllChargeStations();
         }
 
-        public ChargeStationReadWithDetailDto GetChargeStationById(int chargeStationId)
+        public async Task<ChargeStationReadWithDetailDto> GetChargeStationById(int chargeStationId)
         {
-            return _service.GetChargeStationById(chargeStationId);
+            return await _service.GetChargeStationById(chargeStationId);
         }
 
-        public void UpdateChargeStation(ChargeStationUpdateDto chargeStation)
+        public async Task UpdateChargeStation(ChargeStationUpdateDto chargeStation)
         {
-            _service.UpdateChargeStation(chargeStation);
+            await _service.UpdateChargeStation(chargeStation);
         }
     }
 }

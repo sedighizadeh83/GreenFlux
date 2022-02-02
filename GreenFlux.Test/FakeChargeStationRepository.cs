@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace GreenFlux.Test
 {
@@ -12,19 +13,19 @@ namespace GreenFlux.Test
     {
         PreparationDbTest dbTest = new PreparationDbTest();
 
-        public void Create(ChargeStation entity)
+        public async Task Create(ChargeStation entity)
         {
             var entityToAdd = new ChargeStation(4, entity.Name, entity.GroupId);
             dbTest._chargeStations.Add(entityToAdd);
         }
 
-        public void Delete(ChargeStation entity)
+        public async Task Delete(ChargeStation entity)
         {
             var entityToRemove = new ChargeStation(3, entity.Name, entity.GroupId);
             dbTest._chargeStations.Remove(entityToRemove);
         }
 
-        public IQueryable<ChargeStation> FindAll()
+        public async Task<IEnumerable<ChargeStation>> FindAll()
         {
             var res = (from ch in dbTest._chargeStations
                        let connectors = (from co in dbTest._connectors
@@ -68,10 +69,10 @@ namespace GreenFlux.Test
                            ConnectorCollection = connectors.ToList()
                        });
 
-            return res.AsQueryable();
+            return res.ToList();
         }
 
-        public IQueryable<ChargeStation> FindByCondition(Expression<Func<ChargeStation, bool>> expression)
+        public async Task<IEnumerable<ChargeStation>> FindByCondition(Expression<Func<ChargeStation, bool>> expression)
         {
             var condition = expression.Compile();
             var res = (from ch in dbTest._chargeStations
@@ -117,10 +118,10 @@ namespace GreenFlux.Test
                            ConnectorCollection = connectors.ToList()
                        });
 
-            return res.AsQueryable();
+            return res.ToList();
         }
 
-        public void Update(ChargeStation entity)
+        public async Task Update(ChargeStation entity)
         {
             var entityToUpdate = dbTest._chargeStations.Where(g => g.Id == entity.Id).ToList().FirstOrDefault();
 

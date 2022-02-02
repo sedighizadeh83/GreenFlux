@@ -4,6 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace GreenFlux.Test
 {
@@ -11,19 +13,19 @@ namespace GreenFlux.Test
     {
         PreparationDbTest dbTest = new PreparationDbTest();
 
-        public void Create(Group entity)
+        public async Task Create(Group entity)
         {
             var entityToAdd = new Group(4, entity.Name, entity.Capacity);
             dbTest._groups.Add(entityToAdd);
         }
 
-        public void Delete(Group entity)
+        public async Task Delete(Group entity)
         {
             var entityToRemove = new Group(3, entity.Name, entity.Capacity);
             dbTest._groups.Remove(entityToRemove);
         }
 
-        public IQueryable<Group> FindAll()
+        public async Task<IEnumerable<Group>> FindAll()
         {
             var res = (from g in dbTest._groups
                        let chargeStations = (from ch in dbTest._chargeStations
@@ -50,11 +52,11 @@ namespace GreenFlux.Test
                             ChargeStationCollection = chargeStations.ToList()
                         });
 
-            return res.AsQueryable();
+            return res.ToList();
             
         }
 
-        public IQueryable<Group> FindByCondition(Expression<Func<Group, bool>> expression)
+        public async Task<IEnumerable<Group>> FindByCondition(Expression<Func<Group, bool>> expression)
         {
             var condition = expression.Compile();
             var res = (from g in dbTest._groups
@@ -83,11 +85,10 @@ namespace GreenFlux.Test
                            ChargeStationCollection = chargeStations.ToList()
                        });
 
-            return res.AsQueryable();
-            //return dbTest._groups.AsQueryable().Where(expression).AsNoTracking();
+            return res.ToList();
         }
 
-        public void Update(Group entity)
+        public async Task Update(Group entity)
         {
             var entityToUpdate = dbTest._groups.Where(g => g.Id == entity.Id).ToList().FirstOrDefault();
 

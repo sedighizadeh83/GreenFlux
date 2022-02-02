@@ -9,14 +9,14 @@ namespace GreenFlux.ServiceAbstraction
 {
     public interface IChargeStationService
     {
-        IEnumerable<ChargeStationReadWithDetailDto> GetAllChargeStations();
+        Task<IEnumerable<ChargeStationReadWithDetailDto>> GetAllChargeStations();
 
-        ChargeStationReadWithDetailDto GetChargeStationById(int chargeStationId);
+        Task<ChargeStationReadWithDetailDto> GetChargeStationById(int chargeStationId);
 
-        void CreateChargeStation(ChargeStationCreateDto chargeStation);
+        Task CreateChargeStation(ChargeStationCreateDto chargeStation);
 
-        void UpdateChargeStation(ChargeStationUpdateDto chargeStation);
+        Task UpdateChargeStation(ChargeStationUpdateDto chargeStation);
 
-        void DeleteChargeStation(int chargeStationId);
+        Task DeleteChargeStation(int chargeStationId);
     }
 }

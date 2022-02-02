@@ -4,6 +4,7 @@ using GreenFlux.RepositoryAbstraction;
 using System.Collections.Generic;
 using GreenFlux.Service;
 using AutoMapper;
+using System.Threading.Tasks;
 
 namespace GreenFlux.Test
 {
@@ -19,29 +20,29 @@ namespace GreenFlux.Test
             _repository = new FakeGroupRepository();
             _service = new GroupService(_repository, _mapper);
         }
-        public void CreateGroup(GroupCreateDto group)
+        public async Task CreateGroup(GroupCreateDto group)
         {
-            _service.CreateGroup(group);
+            await _service.CreateGroup(group);
         }
 
-        public void DeleteGroup(int groupId)
+        public async Task DeleteGroup(int groupId)
         {
-            _service.DeleteGroup(groupId);
+            await _service.DeleteGroup(groupId);
         }
 
-        public IEnumerable<GroupReadWithDetailDto> GetAllGroups()
+        public async Task<IEnumerable<GroupReadWithDetailDto>> GetAllGroups()
         {
-            return _service.GetAllGroups();
+            return await _service.GetAllGroups();
         }
 
-        public GroupReadWithDetailDto GetGroupById(int groupId)
+        public async Task<GroupReadWithDetailDto> GetGroupById(int groupId)
         {
-            return _service.GetGroupById(groupId);
+            return await _service.GetGroupById(groupId);
         }
 
-        public void UpdateGroup(GroupUpdateDto group)
+        public async Task UpdateGroup(GroupUpdateDto group)
         {
-            _service.UpdateGroup(group);
+            await _service.UpdateGroup(group);
         }
     }
 }

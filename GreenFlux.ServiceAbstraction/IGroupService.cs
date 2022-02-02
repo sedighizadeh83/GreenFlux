@@ -4,14 +4,14 @@ namespace GreenFlux.ServiceAbstraction
 {
     public interface IGroupService
     {
-        IEnumerable<GroupReadWithDetailDto> GetAllGroups();
+        Task<IEnumerable<GroupReadWithDetailDto>> GetAllGroups();
 
-        GroupReadWithDetailDto GetGroupById(int groupId);
+        Task<GroupReadWithDetailDto> GetGroupById(int groupId);
 
-        void CreateGroup(GroupCreateDto group);
+        Task CreateGroup(GroupCreateDto group);
 
-        void UpdateGroup(GroupUpdateDto group);
+        Task UpdateGroup(GroupUpdateDto group);
 
-        void DeleteGroup(int groupId);
+        Task DeleteGroup(int groupId);
     }
 }

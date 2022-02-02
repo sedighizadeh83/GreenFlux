@@ -5,14 +5,14 @@ namespace GreenFlux.RepositoryAbstraction
 {
     public interface IChargeStationRepository
     {
-        IQueryable<ChargeStation> FindAll();
+        Task<IEnumerable<ChargeStation>> FindAll();
 
-        IQueryable<ChargeStation> FindByCondition(Expression<Func<ChargeStation, bool>> expression);
+        Task<IEnumerable<ChargeStation>> FindByCondition(Expression<Func<ChargeStation, bool>> expression);
 
-        void Create(ChargeStation entity);
+        Task Create(ChargeStation entity);
 
-        void Update(ChargeStation entity);
+        Task Update(ChargeStation entity);
 
-        void Delete(ChargeStation entity);
+        Task Delete(ChargeStation entity);
     }
 }

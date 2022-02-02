@@ -19,36 +19,38 @@ namespace GreenFlux.Repository
         {
             _context = context;
         }
-        public void Create(ChargeStation entity)
+        public async Task Create(ChargeStation entity)
         {
             this._context.Set<ChargeStation>().Add(entity);
-            this._context.SaveChanges();
+            await this._context.SaveChangesAsync();
         }
 
-        public void Delete(ChargeStation entity)
+        public async Task Delete(ChargeStation entity)
         {
             this._context.Set<ChargeStation>().Remove(entity);
-            this._context.SaveChanges();
+            await this._context.SaveChangesAsync();
         }
 
-        public IQueryable<ChargeStation> FindAll()
+        public async Task<IEnumerable<ChargeStation>> FindAll()
         {
-            return this._context.Set<ChargeStation>().AsNoTracking()
+            return await this._context.Set<ChargeStation>().AsNoTracking()
                 .Include(g => g.Group)
-                .Include(g => g.ConnectorCollection);
+                .Include(g => g.ConnectorCollection)
+                .ToListAsync();
         }
 
-        public IQueryable<ChargeStation> FindByCondition(Expression<Func<ChargeStation, bool>> expression)
+        public async Task<IEnumerable<ChargeStation>> FindByCondition(Expression<Func<ChargeStation, bool>> expression)
         {
-            return this._context.Set<ChargeStation>().Where(expression).AsNoTracking()
+            return await this._context.Set<ChargeStation>().Where(expression).AsNoTracking()
                 .Include(g => g.Group)
-                .Include(g => g.ConnectorCollection);
+                .Include(g => g.ConnectorCollection)
+                .ToListAsync();
         }
 
-        public void Update(ChargeStation entity)
+        public async Task Update(ChargeStation entity)
         {
             this._context.Set<ChargeStation>().Update(entity);
-            this._context.SaveChanges();
+            await this._context.SaveChangesAsync();
         }
     }
 }

@@ -33,20 +33,20 @@ namespace GreenFlux.Test
         }
 
         [Fact]
-        public void GetAllConnectors_WhenCalled_ReturnsOkResult()
+        public async void GetAllConnectors_WhenCalled_ReturnsOkResult()
         {
             // Act
-            var okResult = _controller.GetAllConnectors();
+            var okResult = await _controller.GetAllConnectors();
 
             // Assert
             Assert.IsType<OkObjectResult>(okResult as OkObjectResult);
         }
 
         [Fact]
-        public void GetAllConnectors_WhenCalled_ReturnsAllItems()
+        public async void GetAllConnectors_WhenCalled_ReturnsAllItems()
         {
             // Act
-            var okResult = _controller.GetAllConnectors() as OkObjectResult;
+            var okResult = await _controller.GetAllConnectors() as OkObjectResult;
 
             // Assert
             var items = Assert.IsType<List<ConnectorReadWithDetailDto>>(okResult.Value);
@@ -54,48 +54,48 @@ namespace GreenFlux.Test
         }
 
         [Fact]
-        public void GetConnectorById_UnknownIdPassed_ReturnsNotFoundResult()
+        public async void GetConnectorById_UnknownIdPassed_ReturnsNotFoundResult()
         {
             // Act
-            var notFoundResult = _controller.GetConnectorById(1000, 1);
+            var notFoundResult = await _controller.GetConnectorById(1000, 1);
 
             // Assert
             Assert.IsType<NotFoundResult>(notFoundResult);
         }
 
         [Fact]
-        public void GetConnectorById_UnknownChargeStationIdPassed_ReturnsNotFoundResult()
+        public async void GetConnectorById_UnknownChargeStationIdPassed_ReturnsNotFoundResult()
         {
             // Act
-            var notFoundResult = _controller.GetConnectorById(1, 1000);
+            var notFoundResult = await _controller.GetConnectorById(1, 1000);
 
             // Assert
             Assert.IsType<NotFoundResult>(notFoundResult);
         }
 
         [Fact]
-        public void GetConnectorById_ExistingIdPassed_ReturnsOkResult()
+        public async void GetConnectorById_ExistingIdPassed_ReturnsOkResult()
         {
             // Arrange
             var testId = 1;
             var chargeStationId = 1;
 
             // Act
-            var okResult = _controller.GetConnectorById(testId, chargeStationId);
+            var okResult = await _controller.GetConnectorById(testId, chargeStationId);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResult as OkObjectResult);
         }
 
         [Fact]
-        public void GetConnectorById_ExistingIdPassed_ReturnsRightItem()
+        public async void GetConnectorById_ExistingIdPassed_ReturnsRightItem()
         {
             // Arrange
             var testId = 1;
             var chargeStationId = 1;
 
             // Act
-            var okResult = _controller.GetConnectorById(testId, chargeStationId) as OkObjectResult;
+            var okResult = await _controller.GetConnectorById(testId, chargeStationId) as OkObjectResult;
 
             // Assert
             Assert.IsType<ConnectorReadWithDetailDto>(okResult.Value);
@@ -104,7 +104,7 @@ namespace GreenFlux.Test
         }
 
         [Fact]
-        public void CreateConnector_NotExistingChargeStationIdPassed_ReturnsNotFoundException()
+        public async void CreateConnector_NotExistingChargeStationIdPassed_ReturnsNotFoundException()
         {
             // Arrange
             var invalidItem = new ConnectorCreateDto()
@@ -115,11 +115,11 @@ namespace GreenFlux.Test
             };
 
             // Assert
-            Assert.Throws<EntityNotFoundException>(() => _controller.CreateConnector(invalidItem));
+            Assert.ThrowsAsync<EntityNotFoundException>(async () => await _controller.CreateConnector(invalidItem));
         }
 
         [Fact]
-        public void CreateConnector_WhenViolatesConnectorsMaxNumber_ReturnsValidationException()
+        public async void CreateConnector_WhenViolatesConnectorsMaxNumber_ReturnsValidationException()
         {
             // Arrange
             var invalidItem = new ConnectorCreateDto()
@@ -130,11 +130,11 @@ namespace GreenFlux.Test
             };
 
             // Assert
-            Assert.Throws<ValidationException>(() => _controller.CreateConnector(invalidItem));
+            Assert.ThrowsAsync<ValidationException>(async () => await _controller.CreateConnector(invalidItem));
         }
 
         [Fact]
-        public void CreateConnector_WhenViolatesCapacity_ReturnsValidationException()
+        public async void CreateConnector_WhenViolatesCapacity_ReturnsValidationException()
         {
             // Arrange
             var invalidItem = new ConnectorCreateDto()
@@ -145,7 +145,7 @@ namespace GreenFlux.Test
             };
 
             // Assert
-            Assert.Throws<ValidationException>(() => _controller.CreateConnector(invalidItem));
+            Assert.ThrowsAsync<ValidationException>(async () => await _controller.CreateConnector(invalidItem));
         }
 
         [Fact]
@@ -167,7 +167,7 @@ namespace GreenFlux.Test
         }
 
         [Fact]
-        public void CreateConnector_ValidObjectPassed_ReturnsCreatedResponse()
+        public async void CreateConnector_ValidObjectPassed_ReturnsCreatedResponse()
         {
             // Arrange
             var validItem = new ConnectorCreateDto()
@@ -178,59 +178,59 @@ namespace GreenFlux.Test
             };
 
             // Act
-            var createdResponse = _controller.CreateConnector(validItem);
+            var createdResponse = await _controller.CreateConnector(validItem);
 
             // Assert
             Assert.IsType<OkObjectResult>(createdResponse as OkObjectResult);
         }
 
         [Fact]
-        public void DeleteConnector_NotExistingIdPassed_ReturnsNotFoundException()
+        public async void DeleteConnector_NotExistingIdPassed_ReturnsNotFoundException()
         {
             // Arrange
             var notExistingId = 1000;
 
             // Assert
-            Assert.Throws<EntityNotFoundException>(() => _controller.DeleteConnector(notExistingId, 1));
+            Assert.ThrowsAsync<EntityNotFoundException>(async () => await _controller.DeleteConnector(notExistingId, 1));
         }
 
         [Fact]
-        public void DeleteConnector_NotExistingCharheStationIdPassed_ReturnsNotFoundException()
+        public async void DeleteConnector_NotExistingCharheStationIdPassed_ReturnsNotFoundException()
         {
             // Arrange
             var notExistingChargeStationId = 1000;
 
             // Assert
-            Assert.Throws<EntityNotFoundException>(() => _controller.DeleteConnector(1, notExistingChargeStationId));
+            Assert.ThrowsAsync<EntityNotFoundException>(async () => await _controller.DeleteConnector(1, notExistingChargeStationId));
         }
 
         [Fact]
-        public void DeleteConnector_WhenViolatesConnectorsMinNumber_ReturnsValidationException()
+        public async void DeleteConnector_WhenViolatesConnectorsMinNumber_ReturnsValidationException()
         {
             // Arrange
             var existingId = 1;
             var existingChargeStationId = 2;
 
             // Assert
-            Assert.Throws<ValidationException>(() => _controller.DeleteConnector(existingId, existingChargeStationId));
+            Assert.ThrowsAsync<ValidationException>(async () => await _controller.DeleteConnector(existingId, existingChargeStationId));
         }
 
         [Fact]
-        public void DeleteConnector_ExistingIdPassed_RemovesOneItem()
+        public async void DeleteConnector_ExistingIdPassed_RemovesOneItem()
         {
             // Arrange
             var existingId = 1;
             var existingChargeStationId = 1;
 
             // Act
-            var okResponse = _controller.DeleteConnector(existingId, existingChargeStationId);
+            var okResponse = await _controller.DeleteConnector(existingId, existingChargeStationId);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResponse as OkObjectResult);
         }
 
         [Fact]
-        public void UpdateConnector_NotExistingIdPassed_ReturnsNotFoundException()
+        public async void UpdateConnector_NotExistingIdPassed_ReturnsNotFoundException()
         {
             // Arrange
             var notExistingItem = new ConnectorUpdateDto()
@@ -241,11 +241,11 @@ namespace GreenFlux.Test
             };
 
             // Assert
-            Assert.Throws<EntityNotFoundException>(() => _controller.UpdateConnector(notExistingItem));
+            Assert.ThrowsAsync<EntityNotFoundException>(async () => await _controller.UpdateConnector(notExistingItem));
         }
 
         [Fact]
-        public void UpdateConnector_NotExistingChargeStationIdPassed_ReturnsNotFoundException()
+        public async void UpdateConnector_NotExistingChargeStationIdPassed_ReturnsNotFoundException()
         {
             // Arrange
             var notExistingItem = new ConnectorUpdateDto()
@@ -256,7 +256,7 @@ namespace GreenFlux.Test
             };
 
             // Assert
-            Assert.Throws<EntityNotFoundException>(() => _controller.UpdateConnector(notExistingItem));
+            Assert.ThrowsAsync<EntityNotFoundException>(async () => await _controller.UpdateConnector(notExistingItem));
         }
 
         [Fact]
@@ -278,7 +278,7 @@ namespace GreenFlux.Test
         }
 
         [Fact]
-        public void UpdateConnector_ValidItemPassed_UpdatesItem()
+        public async void UpdateConnector_ValidItemPassed_UpdatesItem()
         {
             // Arrange
             var validItem = new ConnectorUpdateDto()
@@ -289,7 +289,7 @@ namespace GreenFlux.Test
             };
 
             // Act
-            var okResponse = _controller.UpdateConnector(validItem);
+            var okResponse = await _controller.UpdateConnector(validItem);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResponse as OkObjectResult);

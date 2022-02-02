@@ -19,18 +19,18 @@ namespace GreenFlux.Service
             _mapper = mapper;
         }
 
-        public void CreateGroup(GroupCreateDto group)
+        public async Task CreateGroup(GroupCreateDto group)
         {
             var groupModel = _mapper.Map<Group>(group);
-            _repository.Create(groupModel);
+            await _repository.Create(groupModel);
         }
 
-        public void DeleteGroup(int groupId)
+        public async Task DeleteGroup(int groupId)
         {
-            var groups = _repository.FindByCondition(g => g.Id == groupId).ToList();
-            if(groups.Count > 0)
+            var groups = await _repository.FindByCondition(g => g.Id == groupId);
+            if(groups.Count() > 0)
             {
-                _repository.Delete(groups.FirstOrDefault());
+                await _repository.Delete(groups.FirstOrDefault());
             }
             else
             {
@@ -38,29 +38,29 @@ namespace GreenFlux.Service
             }
         }
 
-        public IEnumerable<GroupReadWithDetailDto> GetAllGroups()
+        public async Task<IEnumerable<GroupReadWithDetailDto>> GetAllGroups()
         {
-            var groups = _repository.FindAll();
+            var groups = await _repository.FindAll();
             return _mapper.Map<IEnumerable<GroupReadWithDetailDto>>(groups);
         }
 
-        public GroupReadWithDetailDto GetGroupById(int groupId)
+        public async Task<GroupReadWithDetailDto> GetGroupById(int groupId)
         {
-            var group = _repository.FindByCondition(g => g.Id == groupId).FirstOrDefault();
-            return _mapper.Map<GroupReadWithDetailDto>(group);
+            var group = await _repository.FindByCondition(g => g.Id == groupId);
+            return _mapper.Map<GroupReadWithDetailDto>(group.FirstOrDefault());
 
         }
 
-        public void UpdateGroup(GroupUpdateDto group)
+        public async Task UpdateGroup(GroupUpdateDto group)
         {
             var groupModel = _mapper.Map<Group>(group);
-            var groupEntity = _repository.FindByCondition(g => g.Id == groupModel.Id).ToList();
-            if (groupEntity.Count > 0)
+            var groupEntity = await _repository.FindByCondition(g => g.Id == groupModel.Id);
+            if (groupEntity.Count() > 0)
             {
                 var validationResult = GroupValidator.Validate(groupModel, groupEntity.FirstOrDefault());
                 if (validationResult.IsValid)
                 {
-                    _repository.Update(groupEntity.FirstOrDefault());
+                    await _repository.Update(groupEntity.FirstOrDefault());
                 }
                 else
                 {

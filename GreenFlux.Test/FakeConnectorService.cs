@@ -4,6 +4,7 @@ using GreenFlux.RepositoryAbstraction;
 using System.Collections.Generic;
 using GreenFlux.Service;
 using AutoMapper;
+using System.Threading.Tasks;
 
 namespace GreenFlux.Test
 {
@@ -21,29 +22,29 @@ namespace GreenFlux.Test
             _chargeStationRepository = new FakeChargeStationRepository();
             _service = new ConnectorService(_repository, _mapper, _chargeStationRepository);
         }
-        public void CreateConnector(ConnectorCreateDto connector)
+        public async Task CreateConnector(ConnectorCreateDto connector)
         {
-            _service.CreateConnector(connector);
+            await _service.CreateConnector(connector);
         }
 
-        public void DeleteConnector(int connectorId, int chargeStationId)
+        public async Task DeleteConnector(int connectorId, int chargeStationId)
         {
-            _service.DeleteConnector(connectorId, chargeStationId);
+            await _service.DeleteConnector(connectorId, chargeStationId);
         }
 
-        public IEnumerable<ConnectorReadWithDetailDto> GetAllConnectors()
+        public async Task<IEnumerable<ConnectorReadWithDetailDto>> GetAllConnectors()
         {
-            return _service.GetAllConnectors();
+            return await _service.GetAllConnectors();
         }
 
-        public ConnectorReadWithDetailDto GetConnectorById(int connectorId, int chargeStationId)
+        public async Task<ConnectorReadWithDetailDto> GetConnectorById(int connectorId, int chargeStationId)
         {
-            return _service.GetConnectorById(connectorId, chargeStationId);
+            return await _service.GetConnectorById(connectorId, chargeStationId);
         }
 
-        public void UpdateConnector(ConnectorUpdateDto connector)
+        public async Task UpdateConnector(ConnectorUpdateDto connector)
         {
-            _service.UpdateConnector(connector);
+            await _service.UpdateConnector(connector);
         }
     }
 }

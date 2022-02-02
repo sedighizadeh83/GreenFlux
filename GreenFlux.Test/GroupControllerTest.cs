@@ -34,20 +34,20 @@ namespace GreenFlux.Test
         }
 
         [Fact]
-        public void GetAllGroups_WhenCalled_ReturnsOkResult()
+        public async void GetAllGroups_WhenCalled_ReturnsOkResult()
         {
             // Act
-            var okResult = _controller.GetAllGroups();
+            var okResult = await _controller.GetAllGroups();
 
             // Assert
             Assert.IsType<OkObjectResult>(okResult as OkObjectResult);
         }
 
         [Fact]
-        public void GetAllGroups_WhenCalled_ReturnsAllItems()
+        public async void GetAllGroups_WhenCalled_ReturnsAllItems()
         {
             // Act
-            var okResult = _controller.GetAllGroups() as OkObjectResult;
+            var okResult = await _controller.GetAllGroups() as OkObjectResult;
 
             // Assert
             var items = Assert.IsType<List<GroupReadWithDetailDto>>(okResult.Value);
@@ -55,36 +55,36 @@ namespace GreenFlux.Test
         }
 
         [Fact]
-        public void GetGroupById_UnknownIdPassed_ReturnsNotFoundResult()
+        public async void GetGroupById_UnknownIdPassed_ReturnsNotFoundResult()
         {
             // Act
-            var notFoundResult = _controller.GetGroupById(1000);
+            var notFoundResult = await _controller.GetGroupById(1000);
 
             // Assert
             Assert.IsType<NotFoundResult>(notFoundResult);
         }
 
         [Fact]
-        public void GetGroupById_ExistingIdPassed_ReturnsOkResult()
+        public async void GetGroupById_ExistingIdPassed_ReturnsOkResult()
         {
             // Arrange
             var testId = 1;
 
             // Act
-            var okResult = _controller.GetGroupById(testId);
+            var okResult = await _controller.GetGroupById(testId);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResult as OkObjectResult);
         }
 
         [Fact]
-        public void GetGroupById_ExistingIdPassed_ReturnsRightItem()
+        public async void GetGroupById_ExistingIdPassed_ReturnsRightItem()
         {
             // Arrange
             var testId = 1;
 
             // Act
-            var okResult = _controller.GetGroupById(testId) as OkObjectResult;
+            var okResult = await _controller.GetGroupById(testId) as OkObjectResult;
 
             // Assert
             Assert.IsType<GroupReadWithDetailDto>(okResult.Value);
@@ -109,7 +109,7 @@ namespace GreenFlux.Test
         }
 
         [Fact]
-        public void CreateGroup_ValidObjectPassed_ReturnsCreatedResponse()
+        public async void CreateGroup_ValidObjectPassed_ReturnsCreatedResponse()
         {
             // Arrange
             var validItem = new GroupCreateDto()
@@ -119,37 +119,37 @@ namespace GreenFlux.Test
             };
 
             // Act
-            var createdResponse = _controller.CreateGroup(validItem);
+            var createdResponse = await _controller.CreateGroup(validItem);
 
             // Assert
             Assert.IsType<OkObjectResult>(createdResponse as OkObjectResult);
         }
 
         [Fact]
-        public void DeleteGroup_NotExistingIdPassed_ReturnsNotFoundException()
+        public async void DeleteGroup_NotExistingIdPassed_ReturnsNotFoundException()
         {
             // Arrange
             var notExistingId = 1000;
 
             // Assert
-            Assert.Throws<EntityNotFoundException>(() => _controller.DeleteGroup(notExistingId));
+            Assert.ThrowsAsync<EntityNotFoundException>(async () => await _controller.DeleteGroup(notExistingId));
         }
 
         [Fact]
-        public void DeleteGroup_ExistingIdPassed_RemovesOneItem()
+        public async void DeleteGroup_ExistingIdPassed_RemovesOneItem()
         {
             // Arrange
             var existingId = 1;
 
             // Act
-            var okResponse = _controller.DeleteGroup(existingId);
+            var okResponse = await _controller.DeleteGroup(existingId);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResponse as OkObjectResult);
         }
 
         [Fact]
-        public void UpdateGroup_NotExistingIdPassed_ReturnsNotFoundException()
+        public async void UpdateGroup_NotExistingIdPassed_ReturnsNotFoundException()
         {
             // Arrange
             var notExistingItem = new GroupUpdateDto()
@@ -160,11 +160,11 @@ namespace GreenFlux.Test
             };
 
             // Assert
-            Assert.Throws<EntityNotFoundException>(() => _controller.UpdateGroup(notExistingItem));
+            Assert.ThrowsAsync<EntityNotFoundException>(async () => await _controller.UpdateGroup(notExistingItem));
         }
 
         [Fact]
-        public void UpdateGroup_WhenViolatesCapacity_ReturnsValidationException()
+        public async void UpdateGroup_WhenViolatesCapacity_ReturnsValidationException()
         {
             var notValidItem = new GroupUpdateDto()
             {
@@ -174,7 +174,7 @@ namespace GreenFlux.Test
             };
 
             // Assert
-            Assert.Throws<ValidationException>(() => _controller.UpdateGroup(notValidItem));
+            Assert.ThrowsAsync<ValidationException>(async () => _controller.UpdateGroup(notValidItem));
         }
 
         [Fact]
@@ -196,7 +196,7 @@ namespace GreenFlux.Test
         }
 
         [Fact]
-        public void UpdateGroup_ValidItemPassed_UpdatesItem()
+        public async void UpdateGroup_ValidItemPassed_UpdatesItem()
         {
             // Arrange
             var validItem = new GroupUpdateDto()
@@ -207,7 +207,7 @@ namespace GreenFlux.Test
             };
 
             // Act
-            var okResponse = _controller.UpdateGroup(validItem);
+            var okResponse = await _controller.UpdateGroup(validItem);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResponse as OkObjectResult);

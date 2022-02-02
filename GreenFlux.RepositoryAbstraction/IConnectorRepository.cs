@@ -5,14 +5,14 @@ namespace GreenFlux.RepositoryAbstraction
 {
     public interface IConnectorRepository
     {
-        IQueryable<Connector> FindAll();
+        Task<IEnumerable<Connector>> FindAll();
 
-        IQueryable<Connector> FindByCondition(Expression<Func<Connector, bool>> expression);
+        Task<IEnumerable<Connector>> FindByCondition(Expression<Func<Connector, bool>> expression);
 
-        void Create(Connector entity);
+        Task Create(Connector entity);
 
-        void Update(Connector entity);
+        Task Update(Connector entity);
 
-        void Delete(Connector entity);
+        Task Delete(Connector entity);
     }
 }

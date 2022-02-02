@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace GreenFlux.Test
 {
@@ -12,19 +13,19 @@ namespace GreenFlux.Test
     {
         PreparationDbTest dbTest = new PreparationDbTest();
 
-        public void Create(Connector entity)
+        public async Task Create(Connector entity)
         {
             var entityToAdd = new Connector(entity.Id, entity.ChargeStationId, entity.MaxCurrent);
             dbTest._connectors.Add(entityToAdd);
         }
 
-        public void Delete(Connector entity)
+        public async Task Delete(Connector entity)
         {
             var entityToRemove = new Connector(entity.Id, entity.ChargeStationId, entity.MaxCurrent);
             dbTest._connectors.Remove(entityToRemove);
         }
 
-        public IQueryable<Connector> FindAll()
+        public async Task<IEnumerable<Connector>> FindAll()
         {
             var res = (from co in dbTest._connectors
                        let parentChargeStation = (from ch in dbTest._chargeStations
@@ -77,10 +78,10 @@ namespace GreenFlux.Test
                            MaxCurrent = co.MaxCurrent,
                        });
 
-            return res.AsQueryable();
+            return res.ToList();
         }
 
-        public IQueryable<Connector> FindByCondition(Expression<Func<Connector, bool>> expression)
+        public async Task<IEnumerable<Connector>> FindByCondition(Expression<Func<Connector, bool>> expression)
         {
             var condition = expression.Compile();
             var res = (from co in dbTest._connectors
@@ -135,10 +136,10 @@ namespace GreenFlux.Test
                            MaxCurrent = co.MaxCurrent,
                        });
 
-            return res.AsQueryable();
+            return res.ToList();
         }
 
-        public void Update(Connector entity)
+        public async Task Update(Connector entity)
         {
             var entityToUpdate = dbTest._connectors.Where(g => g.Id == entity.Id && g.ChargeStationId == entity.ChargeStationId).ToList().FirstOrDefault();
 

@@ -2,6 +2,7 @@
 using GreenFlux.DTO.ChargeStation;
 using GreenFlux.ServiceAbstraction;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GreenFlux.API.Controllers
 {
@@ -17,17 +18,17 @@ namespace GreenFlux.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetAllChargeStations()
+        public async Task<ActionResult> GetAllChargeStations()
         {
-            var chargeStationItems = _chargeStationService.GetAllChargeStations();
+            var chargeStationItems = await _chargeStationService.GetAllChargeStations();
 
             return Ok(chargeStationItems);
         }
 
         [HttpGet("{id}")]
-        public ActionResult GetChargeStationById(int id)
+        public async Task<ActionResult> GetChargeStationById(int id)
         {
-            var chargeStationItem = _chargeStationService.GetChargeStationById(id);
+            var chargeStationItem = await _chargeStationService.GetChargeStationById(id);
 
             if (chargeStationItem == null)
             {
@@ -38,25 +39,25 @@ namespace GreenFlux.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateChargeStation(ChargeStationCreateDto chargeStation)
+        public async Task<ActionResult> CreateChargeStation(ChargeStationCreateDto chargeStation)
         {
-            _chargeStationService.CreateChargeStation(chargeStation);
+            await _chargeStationService.CreateChargeStation(chargeStation);
 
             return Ok("Charge station created successfully");
         }
 
         [HttpPut]
-        public ActionResult UpdateChargeStation(ChargeStationUpdateDto chargeStation)
+        public async Task<ActionResult> UpdateChargeStation(ChargeStationUpdateDto chargeStation)
         {
-            _chargeStationService.UpdateChargeStation(chargeStation);
+            await _chargeStationService.UpdateChargeStation(chargeStation);
 
             return Ok("Charge station updated successfully");
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteChargeStation(int id)
+        public async Task<ActionResult> DeleteChargeStation(int id)
         {
-            _chargeStationService.DeleteChargeStation(id);
+            await _chargeStationService.DeleteChargeStation(id);
 
             return Ok("Charge station deleted successfully");
         }

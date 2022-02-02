@@ -14,36 +14,38 @@ namespace GreenFlux.Repository
         {
             _context = context;
         }
-        public void Create(Group entity)
+        public async Task Create(Group entity)
         {
             this._context.Set<Group>().Add(entity);
-            this._context.SaveChanges();
+            await this._context.SaveChangesAsync();
         }
 
-        public void Delete(Group entity)
+        public async Task Delete(Group entity)
         {
             this._context.Set<Group>().Remove(entity);
-            this._context.SaveChanges();
+            await this._context.SaveChangesAsync();
         }
 
-        public IQueryable<Group> FindAll()
+        public async Task<IEnumerable<Group>> FindAll()
         {
-            return this._context.Set<Group>().AsNoTracking()
+            return await this._context.Set<Group>().AsNoTracking()
                 .Include(g => g.ChargeStationCollection)
-                .ThenInclude(g => g.ConnectorCollection);
+                .ThenInclude(g => g.ConnectorCollection)
+                .ToListAsync();
         }
 
-        public IQueryable<Group> FindByCondition(Expression<Func<Group, bool>> expression)
+        public async Task<IEnumerable<Group>> FindByCondition(Expression<Func<Group, bool>> expression)
         {
-            return this._context.Set<Group>().Where(expression).AsNoTracking()
+            return await this._context.Set<Group>().Where(expression).AsNoTracking()
                 .Include(g => g.ChargeStationCollection)
-                .ThenInclude(g => g.ConnectorCollection);
+                .ThenInclude(g => g.ConnectorCollection)
+                .ToListAsync();
         }
 
-        public void Update(Group entity)
+        public async Task Update(Group entity)
         {
             this._context.Set<Group>().Update(entity);
-            this._context.SaveChanges();
+            await this._context.SaveChangesAsync();
         }
     }
 }

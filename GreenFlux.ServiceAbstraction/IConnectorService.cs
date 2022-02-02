@@ -9,14 +9,14 @@ namespace GreenFlux.ServiceAbstraction
 {
     public interface IConnectorService
     {
-        IEnumerable<ConnectorReadWithDetailDto> GetAllConnectors();
+        Task<IEnumerable<ConnectorReadWithDetailDto>> GetAllConnectors();
 
-        ConnectorReadWithDetailDto GetConnectorById(int connectorId, int chargeStationId);
+        Task<ConnectorReadWithDetailDto> GetConnectorById(int connectorId, int chargeStationId);
 
-        void CreateConnector(ConnectorCreateDto connector);
+        Task CreateConnector(ConnectorCreateDto connector);
 
-        void UpdateConnector(ConnectorUpdateDto connector);
+        Task UpdateConnector(ConnectorUpdateDto connector);
 
-        void DeleteConnector(int connectorId, int chargeStationId);
+        Task DeleteConnector(int connectorId, int chargeStationId);
     }
 }

@@ -5,14 +5,14 @@ namespace GreenFlux.RepositoryAbstraction
 {
     public interface IGroupRepository
     {
-        IQueryable<Group> FindAll();
+        Task<IEnumerable<Group>> FindAll();
 
-        IQueryable<Group> FindByCondition(Expression<Func<Group, bool>> expression);
+        Task<IEnumerable<Group>> FindByCondition(Expression<Func<Group, bool>> expression);
 
-        void Create(Group entity);
+        Task Create(Group entity);
 
-        void Update(Group entity);
+        Task Update(Group entity);
 
-        void Delete(Group entity);
+        Task Delete(Group entity);
     }
 }

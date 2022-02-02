@@ -32,20 +32,20 @@ namespace GreenFlux.Test
         }
 
         [Fact]
-        public void GetAllChargeStations_WhenCalled_ReturnsOkResult()
+        public async void GetAllChargeStations_WhenCalled_ReturnsOkResult()
         {
             // Act
-            var okResult = _controller.GetAllChargeStations();
+            var okResult = await _controller.GetAllChargeStations();
 
             // Assert
             Assert.IsType<OkObjectResult>(okResult as OkObjectResult);
         }
 
         [Fact]
-        public void GetAllChargeStations_WhenCalled_ReturnsAllItems()
+        public async void GetAllChargeStations_WhenCalled_ReturnsAllItems()
         {
             // Act
-            var okResult = _controller.GetAllChargeStations() as OkObjectResult;
+            var okResult = await _controller.GetAllChargeStations() as OkObjectResult;
 
             // Assert
             var items = Assert.IsType<List<ChargeStationReadWithDetailDto>>(okResult.Value);
@@ -53,36 +53,36 @@ namespace GreenFlux.Test
         }
 
         [Fact]
-        public void GetChargeStationById_UnknownIdPassed_ReturnsNotFoundResult()
+        public async void GetChargeStationById_UnknownIdPassed_ReturnsNotFoundResult()
         {
             // Act
-            var notFoundResult = _controller.GetChargeStationById(1000);
+            var notFoundResult = await _controller.GetChargeStationById(1000);
 
             // Assert
             Assert.IsType<NotFoundResult>(notFoundResult);
         }
 
         [Fact]
-        public void GetChargeStationById_ExistingIdPassed_ReturnsOkResult()
+        public async void GetChargeStationById_ExistingIdPassed_ReturnsOkResult()
         {
             // Arrange
             var testId = 1;
 
             // Act
-            var okResult = _controller.GetChargeStationById(testId);
+            var okResult = await _controller.GetChargeStationById(testId);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResult as OkObjectResult);
         }
 
         [Fact]
-        public void GetChargeStationById_ExistingIdPassed_ReturnsRightItem()
+        public async void GetChargeStationById_ExistingIdPassed_ReturnsRightItem()
         {
             // Arrange
             var testId = 1;
 
             // Act
-            var okResult = _controller.GetChargeStationById(testId) as OkObjectResult;
+            var okResult = await _controller.GetChargeStationById(testId) as OkObjectResult;
 
             // Assert
             Assert.IsType<ChargeStationReadWithDetailDto>(okResult.Value);
@@ -90,7 +90,7 @@ namespace GreenFlux.Test
         }
 
         [Fact]
-        public void CreateChargeStation_NotExistingGroupIdPassed_ReturnsNotFoundException()
+        public async void CreateChargeStation_NotExistingGroupIdPassed_ReturnsNotFoundException()
         {
             // Arrange
             var invalidItem = new ChargeStationCreateDto()
@@ -108,11 +108,11 @@ namespace GreenFlux.Test
             };
 
             // Assert
-            Assert.Throws<EntityNotFoundException>(() => _controller.CreateChargeStation(invalidItem));
+            Assert.ThrowsAsync<EntityNotFoundException>(async () => await _controller.CreateChargeStation(invalidItem));
         }
 
         [Fact]
-        public void CreateChargeStation_WhenMoreThanFiveConnectorsPassed_ReturnsValidationException()
+        public async void CreateChargeStation_WhenMoreThanFiveConnectorsPassed_ReturnsValidationException()
         {
             // Arrange
             var invalidItem = new ChargeStationCreateDto()
@@ -155,11 +155,11 @@ namespace GreenFlux.Test
             };
 
             // Assert
-            Assert.Throws<ValidationException>(() => _controller.CreateChargeStation(invalidItem));
+            Assert.ThrowsAsync<ValidationException>(async () => await _controller.CreateChargeStation(invalidItem));
         }
 
         [Fact]
-        public void CreateChargeStation_WhenViolatesCapacity_ReturnsValidationException()
+        public async void CreateChargeStation_WhenViolatesCapacity_ReturnsValidationException()
         {
             // Arrange
             var invalidItem = new ChargeStationCreateDto()
@@ -192,11 +192,11 @@ namespace GreenFlux.Test
             };
 
             // Assert
-            Assert.Throws<ValidationException>(() => _controller.CreateChargeStation(invalidItem));
+            Assert.ThrowsAsync<ValidationException>(async () => await _controller.CreateChargeStation(invalidItem));
         }
 
         [Fact]
-        public void CreateChargeStation_ValidObjectPassed_ReturnsCreatedResponse()
+        public async void CreateChargeStation_ValidObjectPassed_ReturnsCreatedResponse()
         {
             // Arrange
             var validItem = new ChargeStationCreateDto()
@@ -229,37 +229,37 @@ namespace GreenFlux.Test
             };
 
             // Act
-            var createdResponse = _controller.CreateChargeStation(validItem);
+            var createdResponse = await _controller.CreateChargeStation(validItem);
 
             // Assert
             Assert.IsType<OkObjectResult>(createdResponse as OkObjectResult);
         }
 
         [Fact]
-        public void DeleteChargeStation_NotExistingIdPassed_ReturnsNotFoundException()
+        public async void DeleteChargeStation_NotExistingIdPassed_ReturnsNotFoundException()
         {
             // Arrange
             var notExistingId = 1000;
 
             // Assert
-            Assert.Throws<EntityNotFoundException>(() => _controller.DeleteChargeStation(notExistingId));
+            Assert.ThrowsAsync<EntityNotFoundException>(async () => await _controller.DeleteChargeStation(notExistingId));
         }
 
         [Fact]
-        public void DeleteChargeStation_ExistingIdPassed_RemovesOneItem()
+        public async void DeleteChargeStation_ExistingIdPassed_RemovesOneItem()
         {
             // Arrange
             var existingId = 1;
 
             // Act
-            var okResponse = _controller.DeleteChargeStation(existingId);
+            var okResponse = await _controller.DeleteChargeStation(existingId);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResponse as OkObjectResult);
         }
 
         [Fact]
-        public void UpdateChargeStation_NotExistingIdPassed_ReturnsNotFoundException()
+        public async void UpdateChargeStation_NotExistingIdPassed_ReturnsNotFoundException()
         {
             // Arrange
             var notExistingItem = new ChargeStationUpdateDto()
@@ -270,11 +270,11 @@ namespace GreenFlux.Test
             };
 
             // Assert
-            Assert.Throws<EntityNotFoundException>(() => _controller.UpdateChargeStation(notExistingItem));
+            Assert.ThrowsAsync<EntityNotFoundException>(async () => await _controller.UpdateChargeStation(notExistingItem));
         }
 
         [Fact]
-        public void UpdateChargeStation_ValidItemPassed_UpdatesItem()
+        public async void UpdateChargeStation_ValidItemPassed_UpdatesItem()
         {
             // Arrange
             var validItem = new ChargeStationUpdateDto()
@@ -285,7 +285,7 @@ namespace GreenFlux.Test
             };
 
             // Act
-            var okResponse = _controller.UpdateChargeStation(validItem);
+            var okResponse = await _controller.UpdateChargeStation(validItem);
 
             // Assert
             Assert.IsType<OkObjectResult>(okResponse as OkObjectResult);

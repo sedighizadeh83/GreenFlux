@@ -2,6 +2,7 @@
 using GreenFlux.DTO.Connector;
 using GreenFlux.ServiceAbstraction;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GreenFlux.API.Controllers
 {
@@ -17,17 +18,17 @@ namespace GreenFlux.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetAllConnectors()
+        public async Task<ActionResult> GetAllConnectors()
         {
-            var connectorItems = _connectorService.GetAllConnectors();
+            var connectorItems = await _connectorService.GetAllConnectors();
 
             return Ok(connectorItems);
         }
 
         [HttpGet("{id}/{chargeStationId}")]
-        public ActionResult GetConnectorById(int id, int chargeStationId)
+        public async Task<ActionResult> GetConnectorById(int id, int chargeStationId)
         {
-            var connectorItem = _connectorService.GetConnectorById(id, chargeStationId);
+            var connectorItem = await _connectorService.GetConnectorById(id, chargeStationId);
 
             if (connectorItem == null)
             {
@@ -38,25 +39,25 @@ namespace GreenFlux.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateConnector(ConnectorCreateDto connector)
+        public async Task<ActionResult> CreateConnector(ConnectorCreateDto connector)
         {
-            _connectorService.CreateConnector(connector);
+            await _connectorService.CreateConnector(connector);
 
             return Ok("Connector created successfully");
         }
 
         [HttpPut]
-        public ActionResult UpdateConnector(ConnectorUpdateDto connector)
+        public async Task<ActionResult> UpdateConnector(ConnectorUpdateDto connector)
         {
-            _connectorService.UpdateConnector(connector);
+            await _connectorService.UpdateConnector(connector);
 
             return Ok("Connector updated successfully");
         }
 
         [HttpDelete("{id}/{chargeStationId}")]
-        public ActionResult DeleteConnector(int id, int chargeStationId)
+        public async Task<ActionResult> DeleteConnector(int id, int chargeStationId)
         {
-            _connectorService.DeleteConnector(id, chargeStationId);
+            await _connectorService.DeleteConnector(id, chargeStationId);
 
             return Ok("Connector deleted successfully");
         }

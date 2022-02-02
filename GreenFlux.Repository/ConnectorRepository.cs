@@ -19,34 +19,36 @@ namespace GreenFlux.Repository
         {
             _context = context;
         }
-        public void Create(Connector entity)
+        public async Task Create(Connector entity)
         {
             this._context.Set<Connector>().Add(entity);
-            this._context.SaveChanges();
+            await this._context.SaveChangesAsync();
         }
 
-        public void Delete(Connector entity)
+        public async Task Delete(Connector entity)
         {
             this._context.Set<Connector>().Remove(entity);
-            this._context.SaveChanges();
+            await this._context.SaveChangesAsync();
         }
 
-        public IQueryable<Connector> FindAll()
+        public async Task<IEnumerable<Connector>> FindAll()
         {
-            return this._context.Set<Connector>().AsNoTracking()
-                .Include(g => g.ChargeStation);
+            return await this._context.Set<Connector>().AsNoTracking()
+                .Include(g => g.ChargeStation)
+                .ToListAsync();
         }
 
-        public IQueryable<Connector> FindByCondition(Expression<Func<Connector, bool>> expression)
+        public async Task<IEnumerable<Connector>> FindByCondition(Expression<Func<Connector, bool>> expression)
         {
-            return this._context.Set<Connector>().Where(expression).AsNoTracking()
-                .Include(g => g.ChargeStation);
+            return await this._context.Set<Connector>().Where(expression).AsNoTracking()
+                .Include(g => g.ChargeStation)
+                .ToListAsync();
         }
 
-        public void Update(Connector entity)
+        public async Task Update(Connector entity)
         {
             this._context.Set<Connector>().Update(entity);
-            this._context.SaveChanges();
+            await this._context.SaveChangesAsync();
         }
     }
 }

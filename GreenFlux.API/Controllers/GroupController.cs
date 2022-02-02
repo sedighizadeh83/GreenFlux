@@ -2,6 +2,7 @@
 using GreenFlux.DTO.Group;
 using GreenFlux.ServiceAbstraction;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GreenFlux.API.Controllers
 {
@@ -17,17 +18,17 @@ namespace GreenFlux.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetAllGroups()
+        public async Task<ActionResult> GetAllGroups()
         {
-            var groupItems = _groupService.GetAllGroups();
+            var groupItems = await _groupService.GetAllGroups();
 
             return Ok(groupItems);
         }
 
         [HttpGet("{id}")]
-        public ActionResult GetGroupById(int id)
+        public async Task<ActionResult> GetGroupById(int id)
         {
-            var groupItem = _groupService.GetGroupById(id);
+            var groupItem = await _groupService.GetGroupById(id);
 
             if (groupItem == null)
             {
@@ -38,25 +39,25 @@ namespace GreenFlux.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateGroup(GroupCreateDto group)
+        public async Task<ActionResult> CreateGroup(GroupCreateDto group)
         {
-            _groupService.CreateGroup(group);
+            await _groupService.CreateGroup(group);
 
             return Ok("Group created successfully");
         }
 
         [HttpPut]
-        public ActionResult UpdateGroup(GroupUpdateDto group)
+        public async Task<ActionResult> UpdateGroup(GroupUpdateDto group)
         {
-            _groupService.UpdateGroup(group);
+            await _groupService.UpdateGroup(group);
 
             return Ok("Group updated successfully");
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteGroup(int id)
+        public async Task<ActionResult> DeleteGroup(int id)
         {
-            _groupService.DeleteGroup(id);
+            await _groupService.DeleteGroup(id);
 
             return Ok("Group deleted successfully");
         }
